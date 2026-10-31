@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aurora Visuals — превью меню</title>
+<style>
+  :root{
+    --accent:#7c5cff;
+    --bg:#07080c;
+    --panel:#101218;
+    --panel-2:#161a22;
+    --line:#252a35;
+    --text:#ffffff;
+    --muted:#9aa4b2;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;font-family:"Segoe UI",Inter,system-ui,-apple-system,sans-serif;}
+  body{
+    min-height:100vh;background:
+      radial-gradient(1100px 600px at 15% -10%, rgba(124,92,255,.25), transparent 60%),
+      radial-gradient(900px 500px at 90% 10%, rgba(0,229,255,.14), transparent 60%),
+      linear-gradient(160deg,#05060a,#0b0d13 60%,#07080c);
+    color:var(--text);display:flex;flex-direction:column;align-items:center;
+    padding:28px 18px 40px;gap:18px;overflow-x:hidden;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;
+    background-image:linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+                     linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+    background-size:44px 44px;mask-image:radial-gradient(circle at 50% 30%, black, transparent 75%);
+  }
+  .stage{position:relative;width:min(1080px,100%);min-height:640px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
+
+  /* ---------- HUD ---------- */
+  .island{
+    position:absolute;top:0;left:50%;transform:translateX(-50%);
+    display:flex;align-items:center;gap:10px;padding:7px 16px;border-radius:999px;
+    background:rgba(12,14,20,.92);border:1px solid rgba(255,255,255,.06);
+    box-shadow:0 10px 30px rgba(0,0,0,.45);font-size:12.5px;white-space:nowrap;
+    transition:all .45s cubic-bezier(.2,.8,.2,1);
+  }
+  .island .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent);}
+  .island .title{font-weight:600;}
+  .island .sub{color:rgba(255,255,255,.62);}
+
+  .watermark{
+    position:absolute;top:4px;left:0;display:flex;align-items:center;gap:10px;
+    background:rgba(12,14,20,.86);border:1px solid rgba(255,255,255,.06);
+    border-radius:10px;padding:8px 14px 8px 10px;font-size:12.5px;letter-spacing:.4px;
+  }
+  .watermark .bar{width:3px;height:20px;border-radius:3px;background:var(--accent);box-shadow:0 0 14px var(--accent);}
+  .watermark b{font-weight:700;letter-spacing:1px;}
+  .watermark .meta{color:var(--muted);}
+
+  .arraylist{position:absolute;top:4px;right:0;display:flex;flex-direction:column;gap:6px;align-items:flex-end;font-size:12px;}
+  .arraylist span{
+    background:rgba(12,14,20,.8);border:1px solid rgba(255,255,255,.05);border-radius:6px;
+    padding:3px 10px;color:#dfe6f2;position:relative;overflow:hidden;
+  }
+  .arraylist span::after{content:"";position:absolute;right:0;top:0;width:2px;height:100%;background:var(--accent);}
+
+  /* ---------- меню ---------- */
+  .menu{
+    width:min(720px,100%);margin-top:64px;border-radius:14px;overflow:hidden;
+    background:linear-gradient(180deg, rgba(22,26,34,.97), rgba(13,15,20,.98));
+    border:1px solid rgba(255,255,255,.07);
+    box-shadow:0 40px 90px rgba(0,0,0,.65), inset 0 1px 0 rgba(255,255,255,.05);
+  }
+  .head{
+    display:flex;align-items:center;gap:12px;padding:12px 14px;
+    background:linear-gradient(180deg, rgba(34,39,50,.85), rgba(20,24,31,.85));
+    border-bottom:1px solid rgba(255,255,255,.07);
+  }
+  .logo{width:6px;height:16px;border-radius:3px;background:var(--accent);box-shadow:0 0 14px var(--accent);}
+  .brand{font-weight:800;letter-spacing:2px;font-size:13px;}
+  .brand em{color:var(--accent);font-style:normal;}
+  .search{
+    margin-left:auto;display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.06);
+    border-radius:9px;padding:6px 11px;font-size:12px;color:var(--muted);min-width:150px;
+  }
+  .theme-btn,.close-btn{
+    background:rgba(255,255,255,.06);border-radius:9px;padding:6px 10px;font-size:11.5px;
+    color:#cfd6e2;cursor:pointer;user-select:none;transition:.2s;
+  }
+  .theme-btn:hover,.close-btn:hover{background:rgba(124,92,255,.25);color:#fff;}
+  .close-btn:hover{background:rgba(255,90,90,.25);}
+
+  .body{display:grid;grid-template-columns:118px 196px 1fr;min-height:356px;}
+
+  .cats{padding:10px;display:flex;flex-direction:column;gap:5px;border-right:1px solid rgba(255,255,255,.05);}
+  .cat{
+    position:relative;border-radius:8px;padding:7px 10px;cursor:pointer;
+    display:flex;flex-direction:column;gap:1px;transition:.18s;
+  }
+  .cat .en{font-size:12.5px;color:var(--muted);}
+  .cat .ru{font-size:10px;color:rgba(154,164,178,.6);}
+  .cat .count{margin-left:auto;font-size:10.5px;color:var(--accent);position:absolute;right:10px;top:9px;}
+  .cat:hover{background:rgba(255,255,255,.05);}
+  .cat.active{background:rgba(124,92,255,.16);}
+  .cat.active .en{color:#fff;font-weight:600;}
+  .cat.active .ru{color:rgba(124,92,255,.85);}
+  .cat.active::before{content:"";position:absolute;left:2px;top:8px;bottom:8px;width:3px;border-radius:2px;background:var(--accent);}
+  .foot{padding:10px;font-size:10px;color:rgba(154,164,178,.75);margin-top:auto;}
+
+  .list{padding:8px;border-right:1px solid rgba(255,255,255,.05);display:flex;flex-direction:column;gap:3px;overflow:auto;max-height:400px;}
+  .row{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:.16s;}
+  .row:hover{background:rgba(255,255,255,.05);}
+  .row.active{background:rgba(124,92,255,.15);}
+  .row .name{font-size:12.5px;color:var(--muted);}
+  .row.on .name{color:var(--accent);}
+  .row.active .name{color:#fff;}
+  .row.active.on .name{color:var(--accent);}
+  .toggle{margin-left:auto;width:24px;height:13px;border-radius:8px;background:rgba(255,255,255,.18);position:relative;transition:.2s;flex:none;}
+  .toggle::after{content:"";position:absolute;top:2px;left:2px;width:9px;height:9px;border-radius:50%;background:#fff;transition:.2s;}
+  .row.on .toggle{background:var(--accent);}
+  .row.on .toggle::after{left:13px;}
+
+  .settings{padding:14px;display:flex;flex-direction:column;gap:11px;overflow:auto;max-height:400px;}
+  .s-title{font-size:14px;font-weight:700;}
+  .s-desc{font-size:10.5px;color:rgba(154,164,178,.85);margin-top:-8px;}
+  .divider{height:1px;background:rgba(255,255,255,.07);}
+  .bind{background:rgba(255,255,255,.06);border-radius:7px;padding:6px 9px;font-size:11px;color:var(--muted);}
+  .setting{display:flex;flex-direction:column;gap:5px;}
+  .setting .label{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);}
+  .setting .label b{color:var(--accent);font-weight:600;}
+  .slider{height:5px;border-radius:3px;background:rgba(255,255,255,.14);position:relative;}
+  .slider i{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:var(--accent);box-shadow:0 0 12px rgba(124,92,255,.6);}
+  .slider u{position:absolute;top:-4px;width:12px;height:12px;border-radius:50%;background:#fff;transform:translateX(-6px);cursor:grab;box-shadow:0 2px 8px rgba(0,0,0,.6);}
+  .modes{display:flex;gap:4px;flex-wrap:wrap;}
+  .modes span{flex:1;text-align:center;font-size:10.5px;padding:5px 4px;border-radius:6px;background:rgba(255,255,255,.07);color:var(--muted);cursor:pointer;transition:.15s;}
+  .modes span:hover{background:rgba(255,255,255,.12);}
+  .modes span.active{background:var(--accent);color:#0b0d13;font-weight:700;}
+  .hue{height:6px;border-radius:4px;background:linear-gradient(90deg,#ff0000,#ffff00,#00ff00,#00ffff,#0000ff,#ff00ff,#ff0000);position:relative;}
+  .hue u{position:absolute;top:-3px;width:12px;height:12px;border-radius:50%;border:2px solid #fff;transform:translateX(-6px);cursor:grab;}
+  .swatch{width:18px;height:12px;border-radius:3px;background:var(--accent);display:inline-block;vertical-align:-2px;}
+
+  .caption{font-size:11.5px;color:rgba(154,164,178,.7);text-align:center;max-width:720px;line-height:1.55;}
+  .caption b{color:#cfd6e2;}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="watermark"><div class="bar"></div><b>AURORA VISUALS</b><span class="meta">| 240 FPS | 12 ms</span></div>
+  <div class="island" id="island">
+    <div class="dot"></div><span class="title">TargetESP</span><span class="sub">включён</span>
+  </div>
+  <div class="arraylist" id="arraylist">
+    <span>TargetESP</span><span>Trails</span><span>JumpCircle</span><span>TotemParticles</span>
+    <span>Capes</span><span>DynamicIsland</span><span>Optimization</span>
+  </div>
+
+  <div class="menu">
+    <div class="head">
+      <div class="logo"></div>
+      <div class="brand">AURORA <em>VISUALS</em></div>
+      <div class="search">⌕ Поиск...</div>
+      <div class="theme-btn" id="themeBtn">NOVA</div>
+      <div class="close-btn">×</div>
+    </div>
+    <div class="body">
+      <div class="cats" id="cats"></div>
+      <div class="list" id="list"></div>
+      <div class="settings" id="settings"></div>
+    </div>
+  </div>
+
+  <div class="caption">
+    Превью интерфейса Aurora Visuals, повторяющее вёрстку игрового меню (<b>Right Shift</b> в игре).
+    Это HTML-макет дизайна, а не скриншот из Minecraft — кликайте категории, модули и тумблеры.
+  </div>
+</div>
+
+<script>
+const data = {
+  Render: [
+    {name:'TargetESP', on:true, desc:'Подсвечивает цель кругом, рамкой или фигурой', settings:[
+      {type:'modes', label:'Режим', value:'Круг', options:['Круг','Рамка','Призрак','Ромб','Кристаллы','Кольцо','Пирамиды']},
+      {type:'slider', label:'Размер', value:1.0, min:0.4, max:3.0, fmt:v=>v.toFixed(2)},
+      {type:'slider', label:'Прозрачность', value:210, min:20, max:255, fmt:v=>Math.round(v)+'%'},
+      {type:'bool', label:'Рябь', value:true},
+      {type:'bool', label:'Заливка', value:true},
+      {type:'hue', label:'Цвет', value:0.72}
+    ]},
+    {name:'Trails', on:true, desc:'Цветной след за игроком', settings:[
+      {type:'modes', label:'Цвет', value:'Радуга', options:['Радуга','Градиент','Обычный']},
+      {type:'slider', label:'Длина', value:45, min:5, max:120, fmt:v=>Math.round(v)},
+      {type:'slider', label:'Толщина', value:2.5, min:1, max:6, fmt:v=>v.toFixed(1)},
+      {type:'bool', label:'Все игроки', value:false},
+      {type:'bool', label:'Частицы', value:true}
+    ]},
+    {name:'Capes', on:true, desc:'Собственный плащ', settings:[
+      {type:'hue', label:'Цвет верха', value:0.72},
+      {type:'hue', label:'Цвет низа', value:0.52},
+      {type:'slider', label:'Размер', value:1.0, min:0.6, max:1.6, fmt:v=>v.toFixed(2)},
+      {type:'slider', label:'Волна', value:1.0, min:0, max:3, fmt:v=>v.toFixed(1)}
+    ]},
+    {name:'Wings', on:false, desc:'Косметические крылья', settings:[
+      {type:'slider', label:'Размер', value:1.0, min:0.5, max:2, fmt:v=>v.toFixed(2)},
+      {type:'slider', label:'Скорость взмаха', value:1.0, min:0.2, max:3, fmt:v=>v.toFixed(1)},
+      {type:'bool', label:'Все игроки', value:false}
+    ]},
+    {name:'ItemHighlight', on:false, desc:'Подсветка предметов на земле', settings:[
+      {type:'modes', label:'Вид', value:'Рамка', options:['Рамка','Заливка','Рамка + заливка']},
+      {type:'slider', label:'Дистанция', value:24, min:4, max:64, fmt:v=>Math.round(v)+' м'},
+      {type:'bool', label:'Пульсация', value:true}
+    ]},
+    {name:'Aura', on:false, desc:'Визуальная аура вокруг игрока', settings:[
+      {type:'modes', label:'Форма', value:'Кольцо', options:['Кольцо','Сфера','Спираль']},
+      {type:'slider', label:'Радиус', value:0.9, min:0.4, max:3, fmt:v=>v.toFixed(2)},
+      {type:'bool', label:'Частицы', value:true}
+    ]}
+  ],
+  Particles: [
+    {name:'JumpCircle', on:true, desc:'Волна под ногами при прыжке', settings:[
+      {type:'modes', label:'Вид', value:'Круг', options:['Круг','Двойной','Полигон']},
+      {type:'slider', label:'Размер', value:1.0, min:0.4, max:2.5, fmt:v=>v.toFixed(2)},
+      {type:'slider', label:'Длительность', value:700, min:200, max:2000, fmt:v=>Math.round(v)+' мс'},
+      {type:'bool', label:'Частицы', value:true}
+    ]},
+    {name:'TotemParticles', on:true, desc:'Свои частицы при срабатывании тотема', settings:[
+      {type:'modes', label:'Стиль', value:'Взрыв', options:['Взрыв','Вихрь','Сфера','Кольцо']},
+      {type:'slider', label:'Количество', value:60, min:10, max:300, fmt:v=>Math.round(v)},
+      {type:'bool', label:'Убрать ванильные', value:true}
+    ]},
+    {name:'HitParticles', on:true, desc:'Частицы при попадании по цели', settings:[
+      {type:'modes', label:'Стиль', value:'Крит', options:['Крит','Сердца','Искры','Дым']},
+      {type:'slider', label:'Количество', value:14, min:3, max:60, fmt:v=>Math.round(v)}
+    ]},
+    {name:'KillEffect', on:true, desc:'Эффект при убийстве цели', settings:[
+      {type:'modes', label:'Стиль', value:'Взрыв', options:['Взрыв','Молния','Кольца','Души']},
+      {type:'slider', label:'Длительность', value:1200, min:400, max:3000, fmt:v=>Math.round(v)+' мс'},
+      {type:'bool', label:'Уведомление', value:true}
+    ]}
+  ],
+  Interface: [
+    {name:'Watermark', on:true, desc:'Логотип клиента, FPS и пинг', settings:[
+      {type:'modes', label:'Стиль', value:'Aurora', options:['Aurora','Минимал','Полоска']},
+      {type:'bool', label:'Показывать FPS', value:true},
+      {type:'bool', label:'Показывать пинг', value:true},
+      {type:'bool', label:'Координаты', value:false}
+    ]},
+    {name:'ArrayList', on:true, desc:'Список активных модулей справа', settings:[
+      {type:'modes', label:'Цвет', value:'Радуга', options:['Радуга','Акцент','Белый']},
+      {type:'bool', label:'Полоска', value:true}
+    ]},
+    {name:'TargetHud', on:true, desc:'Информация о текущей цели', settings:[
+      {type:'modes', label:'Позиция', value:'Снизу слева', options:['Снизу слева','Центр','Снизу справа']},
+      {type:'slider', label:'Дистанция', value:16, min:3, max:64, fmt:v=>Math.round(v)+' м'},
+      {type:'bool', label:'Полоса здоровья', value:true}
+    ]},
+    {name:'DynamicIsland', on:true, desc:'Капсула сверху: музыка, эффекты, уведомления', settings:[
+      {type:'bool', label:'Уведомления', value:true},
+      {type:'bool', label:'Музыка', value:true},
+      {type:'bool', label:'Эффекты', value:true}
+    ]}
+  ],
+  Player: [
+    {name:'SlotLock', on:false, desc:'Закрепляет слоты хотбара', settings:[
+      {type:'string', label:'Слоты', value:'1,9'},
+      {type:'bool', label:'Уведомлять', value:true}
+    ]},
+    {name:'TargetActions', on:false, desc:'Реакция на появление цели', settings:[
+      {type:'modes', label:'Действие', value:'Уведомление', options:['Уведомление','Сообщение','Команда']},
+      {type:'string', label:'Текст', value:'цель: %name%'},
+      {type:'slider', label:'Задержка', value:4000, min:500, max:30000, fmt:v=>Math.round(v)+' мс'}
+    ]},
+    {name:'BindCommand', on:false, desc:'Отправляет команду по бинду', settings:[
+      {type:'string', label:'Команда', value:'/home'},
+      {type:'bool', label:'Отключаться после', value:true}
+    ]}
+  ],
+  Misc: [
+    {name:'CustomFog', on:false, desc:'Свой цвет и плотность тумана', settings:[
+      {type:'hue', label:'Цвет тумана', value:0.65},
+      {type:'slider', label:'Плотность', value:1.0, min:0, max:4, fmt:v=>v.toFixed(2)}
+    ]},
+    {name:'Weather', on:false, desc:'Убирает дождь и снег', settings:[
+      {type:'bool', label:'Без дождя', value:true},
+      {type:'bool', label:'Без снега', value:true}
+    ]},
+    {name:'Fullbright', on:false, desc:'Полная яркость мира', settings:[
+      {type:'slider', label:'Яркость', value:1.0, min:0.1, max:1, fmt:v=>v.toFixed(2)}
+    ]},
+    {name:'Optimization', on:true, desc:'Не рисует то, что за стенами', settings:[
+      {type:'bool', label:'Отсечение сущностей', value:true},
+      {type:'slider', label:'Лимит дистанции', value:64, min:16, max:128, fmt:v=>Math.round(v)+' м'},
+      {type:'bool', label:'Не отсекать игроков', value:true}
+    ]},
+    {name:'ScreenTweaks', on:false, desc:'Чистая картинка без виньетки', settings:[
+      {type:'bool', label:'Без виньетки', value:true},
+      {type:'bool', label:'Без вспышек молний', value:true}
+    ]}
+  ]
+};
+const ru = {Render:'Визуал', Particles:'Частицы', Interface:'Интерфейс', Player:'Игрок', Misc:'Разное'};
+let cat = 'Render', selected = data.Render[0].name;
+
+const catsEl = document.getElementById('cats');
+const listEl = document.getElementById('list');
+const setEl = document.getElementById('settings');
+
+function renderCats(){
+  catsEl.innerHTML = Object.keys(data).map(c=>{
+    const on = data[c].filter(m=>m.on).length;
+    return `<div class="cat ${c===cat?'active':''}" data-cat="${c}">
+      <span class="en">${c}</span><span class="ru">${ru[c]}</span>
+      ${on?`<span class="count">${on}</span>`:''}
+    </div>`;
+  }).join('') + `<div class="foot">v1.0.0 · 1.21.11</div>`;
+  catsEl.querySelectorAll('.cat').forEach(el=>el.onclick=()=>{
+    cat = el.dataset.cat; selected = data[cat][0]?.name; renderAll();
+  });
+}
+function renderList(){
+  listEl.innerHTML = data[cat].map(m=>`
+    <div class="row ${m.on?'on':''} ${m.name===selected?'active':''}" data-name="${m.name}">
+      <span class="name">${m.name}</span>
+      <span class="toggle"></span>
+    </div>`).join('');
+  listEl.querySelectorAll('.row').forEach(el=>{
+    el.onclick = (e)=>{
+      const mod = data[cat].find(m=>m.name===el.dataset.name);
+      if (e.target.classList.contains('toggle')) { mod.on = !mod.on; }
+      else { selected = mod.name; }
+      renderList(); renderArraylist(); renderIsland(mod);
+    };
+  });
+}
+function renderSettings(){
+  const mod = data[cat].find(m=>m.name===selected) || data[cat][0];
+  if(!mod){ setEl.innerHTML=''; return; }
+  let html = `<div class="s-title">${mod.name}</div><div class="s-desc">${mod.desc}</div><div class="divider"></div>
+              <div class="bind">Бинд: ${mod.on?'R':'NONE'}</div>`;
+  mod.settings.forEach((s,i)=>{
+    if(s.type==='bool'){
+      html += `<div class="setting"><div class="label"><span>${s.label}</span><b>${s.value?'ON':'OFF'}</b></div>
+        <div class="modes"><span class="${s.value?'active':''}" data-i="${i}" data-v="true">Вкл</span>
+        <span class="${!s.value?'active':''}" data-i="${i}" data-v="false">Выкл</span></div></div>`;
+    } else if(s.type==='modes'){
+      html += `<div class="setting"><div class="label"><span>${s.label}</span></div><div class="modes">
+        ${s.options.map(o=>`<span class="${o===s.value?'active':''}" data-i="${i}" data-v="${o}">${o}</span>`).join('')}
+      </div></div>`;
+    } else if(s.type==='slider'){
+      const p = (s.value - s.min)/(s.max - s.min);
+      html += `<div class="setting"><div class="label"><span>${s.label}</span><b>${s.fmt(s.value)}</b></div>
+        <div class="slider" data-i="${i}"><i style="width:${p*100}%"></i><u style="left:${p*100}%"></u></div></div>`;
+    } else if(s.type==='hue'){
+      html += `<div class="setting"><div class="label"><span>${s.label}</span><b><span class="swatch" style="background:hsl(${s.value*360},75%,60%)"></span></b></div>
+        <div class="hue" data-i="${i}"><u style="left:${s.value*100}%"></u></div></div>`;
+    } else if(s.type==='string'){
+      html += `<div class="setting"><div class="label"><span>${s.label}</span></div>
+        <div class="bind" style="color:#fff">${s.value}</div></div>`;
+    }
+  });
+  setEl.innerHTML = html;
+
+  setEl.querySelectorAll('[data-v]').forEach(el=>el.onclick=()=>{
+    const s = mod.settings[+el.dataset.i];
+    s.value = el.dataset.v === 'true' ? true : el.dataset.v === 'false' ? false : el.dataset.v;
+    renderSettings();
+  });
+  setEl.querySelectorAll('.slider').forEach(el=>{
+    const s = mod.settings[+el.dataset.i];
+    const move = (ev)=>{
+      const r = el.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, (ev.clientX - r.left)/r.width));
+      s.value = s.min + p*(s.max-s.min);
+      el.querySelector('i').style.width = (p*100)+'%';
+      el.querySelector('u').style.left = (p*100)+'%';
+      el.parentElement.querySelector('.label b').textContent = s.fmt(s.value);
+    };
+    el.onpointerdown = (ev)=>{ el.setPointerCapture(ev.pointerId); move(ev);
+      el.onpointermove = (e2)=>{ if(e2.buttons) move(e2); }; };
+  });
+  setEl.querySelectorAll('.hue').forEach(el=>{
+    const s = mod.settings[+el.dataset.i];
+    const move = (ev)=>{
+      const r = el.getBoundingClientRect();
+      s.value = Math.min(1, Math.max(0, (ev.clientX - r.left)/r.width));
+      el.querySelector('u').style.left = (s.value*100)+'%';
+      el.parentElement.querySelector('.swatch').style.background = `hsl(${s.value*360},75%,60%)`;
+    };
+    el.onpointerdown = (ev)=>{ el.setPointerCapture(ev.pointerId); move(ev);
+      el.onpointermove = (e2)=>{ if(e2.buttons) move(e2); }; };
+  });
+}
+function renderArraylist(){
+  const items = Object.values(data).flat().filter(m=>m.on).map(m=>m.name);
+  document.getElementById('arraylist').innerHTML = items.slice(0,9).map(n=>`<span>${n}</span>`).join('');
+}
+const islandMessages = [
+  ['TargetESP', 'включён'], ['Kill', 'Steve повержен'], ['Сейчас играет', 'Aria Math'],
+  ['Скорость', 'истекает через 12 с'], ['AURORA · RSHIFT', 'меню']
+];
+let islandIndex = 0;
+function renderIsland(mod){
+  const el = document.getElementById('island');
+  const [t, s] = mod ? [mod.name, mod.on?'включён':'выключен'] : islandMessages[0];
+  el.innerHTML = `<div class="dot"></div><span class="title">${t}</span><span class="sub">${s}</span>`;
+}
+setInterval(()=>{
+  if(document.hidden) return;
+  islandIndex = (islandIndex+1) % islandMessages.length;
+  const [t,s] = islandMessages[islandIndex];
+  const el = document.getElementById('island');
+  el.innerHTML = `<div class="dot"></div><span class="title">${t}</span><span class="sub">${s}</span>`;
+}, 3200);
+
+const themes = ['NOVA','AURORA','MIDNIGHT','SUNSET','MATRIX'];
+const accents = {NOVA:'#7c5cff', AURORA:'#00e5ff', MIDNIGHT:'#4d7cfe', SUNSET:'#ff8a4c', MATRIX:'#3dff7a'};
+let themeIndex = 0;
+document.getElementById('themeBtn').onclick = (e)=>{
+  themeIndex = (themeIndex+1) % themes.length;
+  const name = themes[themeIndex];
+  e.target.textContent = name;
+  document.documentElement.style.setProperty('--accent', accents[name]);
+};
+
+function renderAll(){ renderCats(); renderList(); renderSettings(); renderArraylist(); }
+renderAll();
+</script>
+</body>
+</html>

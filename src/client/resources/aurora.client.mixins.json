@@ -1,0 +1,16 @@
+{
+	"required": true,
+	"package": "su.aurora.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"ParticleEngineMixin",
+		"FogRendererMixin",
+		"WeatherEffectRendererMixin",
+		"EntityRenderDispatcherMixin",
+		"GameRendererAccessor",
+		"LivingEntityRendererMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

@@ -1,0 +1,34 @@
+{
+	"schemaVersion": 1,
+	"id": "aurora",
+	"version": "${version}",
+	"name": "Aurora Visuals",
+	"description": "Визуальный клиент для Minecraft 1.21.11: TargetESP, следы, частицы, кейпы, кастомный туман, Dynamic Island, своё меню и оптимизация.",
+	"authors": [
+		"Aurora Visuals"
+	],
+	"contact": {
+		"homepage": "https://example.com/aurora",
+		"sources": "https://example.com/aurora"
+	},
+	"license": "MIT",
+	"icon": "assets/aurora/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"su.aurora.AuroraClient"
+		]
+	},
+	"mixins": [
+		{
+			"config": "aurora.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.20.1",
+		"minecraft": "~1.21.11",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
