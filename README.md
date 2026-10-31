@@ -1,5 +1,8 @@
 # Aurora Visuals — визуальный клиент для Minecraft 1.21.11 (Fabric)
 
+[![build](https://github.com/amir2013shai-byte/aurora-visuals/actions/workflows/build.yml/badge.svg)](https://github.com/amir2013shai-byte/aurora-visuals/actions/workflows/build.yml)
+[![release](https://img.shields.io/github/v/release/amir2013shai-byte/aurora-visuals?label=download)](https://github.com/amir2013shai-byte/aurora-visuals/releases/latest)
+
 Открытая реализация идей визуального клиента **Never Visuals** ([nevervisuals.su](https://nevervisuals.su/)):
 ESP-подсветка цели, следы, частицы, кейпы, кастомный туман, Dynamic Island, собственное меню
 и оптимизация. Всё написано с нуля, без проверок лицензии, без привязки к аккаунту и без
@@ -10,7 +13,7 @@ ESP-подсветка цели, следы, частицы, кейпы, кас�
 * Java: **21+**
 * Сторона: **только клиент** (`environment: client`)
 
-Готовый файл: `build/libs/aurora-1.3.0.jar` (он же скопирован в корень рабочей папки как `aurora-1.3.0.jar`).
+Готовый файл: **[aurora-1.3.0.jar](https://github.com/amir2013shai-byte/aurora-visuals/releases/download/v1.3.0/aurora-1.3.0.jar)** (сборка `build/libs/aurora-1.3.0.jar`).
 
 ---
 
