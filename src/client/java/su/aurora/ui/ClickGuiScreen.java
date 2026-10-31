@@ -187,6 +187,14 @@ public class ClickGuiScreen extends Screen {
         Render2D.textCentered(graphics, "КОСМЕТИКА", cosmeticsX + 40, cosmeticsY + 5,
                 cosmeticsHover ? theme.accent() : theme.textPrimary());
 
+        // Кнопка «Редактор HUD»
+        int hudX = panelX + panelWidth - 380;
+        boolean hudHover = Render2D.hovered(mouseX, mouseY, hudX, cosmeticsY, 80, 18);
+        Render2D.roundedRect(graphics, hudX, cosmeticsY, 80, 18, 8,
+                ColorUtil.withAlpha(hudHover ? theme.accent() : theme.panelLight(), hudHover ? 90 : 190));
+        Render2D.textCentered(graphics, "HUD", hudX + 40, cosmeticsY + 5,
+                hudHover ? theme.accent() : theme.textPrimary());
+
         // Поиск
         int searchWidth = 132;
         int searchX = panelX + panelWidth - searchWidth - 74;
@@ -397,6 +405,11 @@ public class ClickGuiScreen extends Screen {
         // открытие экрана косметики
         if (Render2D.hovered(mouseX, mouseY, panelX + panelWidth - 294, panelY + 9, 80, 18)) {
             Minecraft.getInstance().setScreen(new CosmeticScreen(this));
+            return true;
+        }
+        // открытие редактора HUD
+        if (Render2D.hovered(mouseX, mouseY, panelX + panelWidth - 380, panelY + 9, 80, 18)) {
+            Minecraft.getInstance().setScreen(new HudEditorScreen(this));
             return true;
         }
         // поиск

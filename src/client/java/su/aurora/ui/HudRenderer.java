@@ -23,10 +23,16 @@ public final class HudRenderer {
             if (!module.isEnabled() || module.getCategory() != su.aurora.core.Category.HUD) {
                 continue;
             }
+            float[] offset = HudOffsets.get(module.getName());
+            var pose = graphics.pose();
+            pose.pushMatrix();
             try {
+                pose.translate(offset[0], offset[1]);
                 module.onHudRender(graphics, delta);
             } catch (Throwable throwable) {
                 Aurora.LOG.error("[{}] Ошибка HUD", module.getName(), throwable);
+            } finally {
+                pose.popMatrix();
             }
         }
     }

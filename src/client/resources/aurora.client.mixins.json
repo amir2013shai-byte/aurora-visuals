@@ -8,7 +8,12 @@
 		"WeatherEffectRendererMixin",
 		"EntityRenderDispatcherMixin",
 		"GameRendererAccessor",
-		"LivingEntityRendererMixin"
+		"LivingEntityRendererMixin",
+		"PauseMixin",
+		"ContainerScreenMixin",
+		"EndCrystalRendererMixin",
+		"ItemInHandRendererMixin",
+		"TitleScreenMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
