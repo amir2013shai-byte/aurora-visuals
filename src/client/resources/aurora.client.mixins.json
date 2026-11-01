@@ -14,7 +14,15 @@
 		"EndCrystalRendererMixin",
 		"ItemInHandRendererMixin",
 		"TitleScreenMixin",
-		"ChatMixin"
+		"ChatMixin",
+		"GameRendererHurtMixin",
+		"ScreenEffectMixin",
+		"EffectBlendMixin",
+		"TotemMixin",
+		"ItemEntityRendererMixin",
+		"GameModeAccessor",
+		"ChatClearMixin",
+		"ChatMessageMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

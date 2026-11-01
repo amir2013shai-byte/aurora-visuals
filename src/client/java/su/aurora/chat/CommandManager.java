@@ -54,6 +54,7 @@ public final class CommandManager {
                 case "hud" -> hud(parts);
                 case "cosmetic", "hat" -> cosmetic(parts);
                 case "modules", "list" -> modules();
+                case "copy" -> copy(parts);
                 case "v", "version" -> print(Aurora.NAME + " v" + Aurora.VERSION + " · модулей: "
                         + (AuroraClient.MODULES == null ? 0 : AuroraClient.MODULES.all().size()));
                 default -> {
@@ -84,7 +85,8 @@ public final class CommandManager {
         print(PREFIX + "toggle <модуль> · " + PREFIX + "bind <модуль> <клавиша> · " + PREFIX + "unbind <модуль>");
         print(PREFIX + "friend add|remove|list [ник] · " + PREFIX + "wp add|remove|list [имя]");
         print(PREFIX + "cfg save|load|list [имя] · " + PREFIX + "theme <тема> · " + PREFIX + "modules");
-        print(PREFIX + "hud reset · " + PREFIX + "cosmetic <модель> · " + PREFIX + "version");
+        print(PREFIX + "hud reset · " + PREFIX + "cosmetic <модель> · " + PREFIX + "copy [строк] · "
+                + PREFIX + "version");
     }
 
     private static Module module(String name) {
@@ -338,6 +340,31 @@ public final class CommandManager {
             }
         }
         print("включено " + enabled + " из " + AuroraClient.MODULES.all().size() + ": " + builder);
+    }
+
+    private static void copy(String[] parts) {
+        int count = 1;
+        if (parts.length > 1) {
+            try {
+                count = Math.max(1, Integer.parseInt(parts[1]));
+            } catch (NumberFormatException ignored) {
+                error("формат: " + PREFIX + "copy [число строк]");
+                return;
+            }
+        }
+        Minecraft client = Minecraft.getInstance();
+        List<String> lines = new ArrayList<>();
+        for (String line : client.gui.getChat().getRecentChat()) {
+            lines.add(line);
+        }
+        if (lines.isEmpty()) {
+            error("история чата пуста");
+            return;
+        }
+        int from = Math.max(0, lines.size() - count);
+        String joined = String.join("\n", lines.subList(from, lines.size()));
+        client.keyboardHandler.setClipboard(joined);
+        print("скопировано строк: " + (lines.size() - from));
     }
 
     /** Открыть чат с уже введённым префиксом (для удобства). */
