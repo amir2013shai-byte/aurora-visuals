@@ -67,6 +67,7 @@ import su.aurora.modules.render.ItemEspModule;
 import su.aurora.modules.misc.AntiClearModule;
 import su.aurora.modules.misc.ChatMentionModule;
 import su.aurora.modules.misc.ChatSuffixModule;
+import su.aurora.modules.hud.BetterDebugModule;
 import su.aurora.modules.hud.MinimapModule;
 
 import java.util.ArrayList;
@@ -125,6 +126,7 @@ public class ModuleManager {
         register(new ChatMentionModule());
         register(new ChatSuffixModule());
         register(new MinimapModule());
+        register(new BetterDebugModule());
         // Particles
         register(new JumpCirclesModule());
         register(new TotemParticlesModule());

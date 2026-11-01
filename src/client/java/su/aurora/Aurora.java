@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 public final class Aurora {
     public static final String MOD_ID = "aurora";
     public static final String NAME = "Aurora Visuals";
-    public static final String VERSION = "1.6.0";
+    public static final String VERSION = "1.7.0";
     public static final Logger LOG = LoggerFactory.getLogger(NAME);
 
     private Aurora() {

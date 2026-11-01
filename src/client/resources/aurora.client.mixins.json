@@ -22,7 +22,8 @@
 		"ItemEntityRendererMixin",
 		"GameModeAccessor",
 		"ChatClearMixin",
-		"ChatMessageMixin"
+		"ChatMessageMixin",
+		"DebugOverlayMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
