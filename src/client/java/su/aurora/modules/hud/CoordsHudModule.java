@@ -72,12 +72,12 @@ public class CoordsHudModule extends Module {
         float y = position.is("Справа сверху") ? 34 : screenHeight - height - 30;
 
         Render2D.roundedRect(graphics, x, y, width, height, 6, 0x8C0C0E14);
-        Render2D.roundedRect(graphics, x, y, 3, height, 3, accent.get());
+        Render2D.roundedRect(graphics, x, y, 3, height, 3, HudStyleModule.resolve(accent));
         Render2D.textShadow(graphics, coords, x + 9, y + 5, 0xFFFFFFFF);
 
         float row = y + 16;
         if (showFacing.get()) {
-            Render2D.textShadow(graphics, facing, x + 9, row, accent.get());
+            Render2D.textShadow(graphics, facing, x + 9, row, HudStyleModule.resolve(accent));
             Render2D.textRight(graphics, String.format(Locale.ROOT, "%.0f°", client.player.getYRot()),
                     x + width - 6, row, 0x99FFFFFF);
             row += 10;

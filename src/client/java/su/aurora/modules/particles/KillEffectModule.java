@@ -32,6 +32,8 @@ public class KillEffectModule extends Module {
     private final ModeSetting mode = addMode("Стиль", "Взрыв", "Взрыв", "Молния", "Кольца", "Души");
     private final NumberSetting life = addInt("Длительность", 1200, 400, 3000);
     private final BooleanSetting notification = addBoolean("Уведомление", true);
+    private final BooleanSetting onlyPlayers = addBoolean("Только игроки", false);
+    private final NumberSetting range = addNumber("Дистанция", 40, 8, 96, 4);
     private final ColorSetting color = addColor("Цвет", 0xFFFF5C5C);
 
     private static class Effect {
@@ -47,7 +49,8 @@ public class KillEffectModule extends Module {
     }
 
     private final List<Effect> effects = new ArrayList<>();
-    private final Map<Integer, LivingEntity> tracked = new HashMap<>();
+    private final Map<Integer, Vec3> tracked = new HashMap<>();
+    private final Set<Integer> killed = new HashSet<>();
 
     public KillEffectModule() {
         super("KillEffect", "Красивый эффект при убийстве цели", Category.PARTICLES);
@@ -67,26 +70,30 @@ public class KillEffectModule extends Module {
             return;
         }
 
-        // сущность «умерла» только если она была жива и исчезла/умерла, а не просто вышла из зоны стриминга
-        var iterator = tracked.entrySet().iterator();
-        while (iterator.hasNext()) {
-            var entry = iterator.next();
-            LivingEntity entity = entry.getValue();
-            if (entity == null || entity.isRemoved() || entity.isDeadOrDying()) {
-                trigger(entity == null ? "Цель" : entity.getName().getString());
-                iterator.remove();
-            }
-        }
-
+        // Эффект играем ТОЛЬКО когда цель реально умирает (isDeadOrDying / HP <= 0).
+        // Пропажа из зоны стриминга — это не смерть: просто забываем сущность.
+        Set<Integer> visible = new HashSet<>();
+        double rangeSq = range.get() * range.get();
         for (Entity entity : client.level.entitiesForRendering()) {
             if (!(entity instanceof LivingEntity living) || living == client.player) {
                 continue;
             }
-            if (living.distanceToSqr(client.player) > 40 * 40) {
+            if (onlyPlayers.get() && !(living instanceof net.minecraft.world.entity.player.Player)) {
                 continue;
             }
-            tracked.put(living.getId(), living);
+            if (living.distanceToSqr(client.player) > rangeSq) {
+                continue;
+            }
+            int id = living.getId();
+            visible.add(id);
+            trackPosition(id, living.position());
+            boolean dying = living.isDeadOrDying() || living.getHealth() <= 0f;
+            if (dying && killed.add(id)) {
+                trigger(tracked.getOrDefault(id, living.position()), living.getName().getString());
+            }
         }
+        tracked.keySet().retainAll(visible);
+        killed.removeIf(id -> !visible.contains(id));
 
         Iterator<Effect> effectIterator = effects.iterator();
         while (effectIterator.hasNext()) {
@@ -96,14 +103,16 @@ public class KillEffectModule extends Module {
         }
     }
 
-    private void trigger(String name) {
+    private void trackPosition(int id, Vec3 position) {
+        tracked.put(id, position);
+    }
+
+    private void trigger(Vec3 position, String name) {
         Minecraft client = Minecraft.getInstance();
         if (client.player == null || client.level == null) {
             return;
         }
-        Vec3 position = new Vec3(client.player.getX(), client.player.getY(), client.player.getZ());
-        // эффект появляется у последней известной позиции цели — берём позицию игрока как якорь
-        effects.add(new Effect(position, name));
+        effects.add(new Effect(position.add(0, 0.1, 0), name));
 
         ParticleOptions particle = switch (mode.get()) {
             case "Молния" -> ParticleTypes.ELECTRIC_SPARK;

@@ -86,7 +86,7 @@ public class PlayerListModule extends Module {
                 : 34;
 
         Render2D.roundedRect(graphics, x, y - 4, width, entries.size() * rowHeight + 8, 6, 0x730C0E14);
-        Render2D.roundedRect(graphics, x, y - 4, 3, entries.size() * rowHeight + 8, 3, accent.get());
+        Render2D.roundedRect(graphics, x, y - 4, 3, entries.size() * rowHeight + 8, 3, HudStyleModule.resolve(accent));
 
         for (Entry entry : entries) {
             double distance = entry.distance;

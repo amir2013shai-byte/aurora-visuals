@@ -71,8 +71,8 @@ public class FpsGraphModule extends Module {
         for (int fps : history) {
             int px = x + 4 + (int) ((w - 8) * (index / (float) Math.max(1, count - 1)));
             int py = y + h - 4 - (int) ((h - 16) * (fps / (float) max));
-            graphics.fill(previousX, previousY, px + 1, py + 1, ColorUtil.withAlpha(accent.get(), 150));
-            graphics.fill(px, py - 1, px + 1, py + 1, ColorUtil.withAlpha(accent.get(), 230));
+            graphics.fill(previousX, previousY, px + 1, py + 1, ColorUtil.withAlpha(HudStyleModule.resolve(accent), 150));
+            graphics.fill(px, py - 1, px + 1, py + 1, ColorUtil.withAlpha(HudStyleModule.resolve(accent), 230));
             previousX = px;
             previousY = py;
             index++;

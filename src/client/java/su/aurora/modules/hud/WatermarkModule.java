@@ -47,7 +47,7 @@ public class WatermarkModule extends Module {
                     client.player.getX(), client.player.getY(), client.player.getZ()));
         }
 
-        int accentColor = accent.get();
+        int accentColor = HudStyleModule.resolve(accent);
         switch (style.get()) {
             case "Минимал" -> {
                 Render2D.textShadow(graphics, name, 8, 8, 0xFFFFFFFF);

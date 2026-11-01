@@ -41,7 +41,7 @@ public class DynamicIslandModule extends Module {
         String title = null;
         String text = null;
         String icon = "◆";
-        int tint = accent.get();
+        int tint = HudStyleModule.resolve(accent);
 
         if (notifications.get() && AuroraClient.NOTIFICATIONS != null) {
             Notifications.Entry entry = AuroraClient.NOTIFICATIONS.latest();

@@ -202,7 +202,7 @@ public class BetterDebugModule extends Module {
         int leftHeight = Math.max(1, left.size()) * lineHeight;
         int rightHeight = Math.max(1, right.size()) * lineHeight;
 
-        int accentColor = accent.get();
+        int accentColor = HudStyleModule.resolve(accent);
         int background = ColorUtil.withAlpha(0x0C0E14, opacity.getInt());
 
         if (!left.isEmpty()) {

@@ -73,7 +73,7 @@ public class PotionHudModule extends Module {
 
             int tint = colorByEffect.get()
                     ? 0xFF000000 | instance.getEffect().value().getColor()
-                    : accent.get();
+                    : HudStyleModule.resolve(accent);
 
             Render2D.roundedRect(graphics, x, y, width, rowHeight, 5, 0x8C0C0E14);
             Render2D.roundedRect(graphics, x, y, 3, rowHeight, 3, tint);

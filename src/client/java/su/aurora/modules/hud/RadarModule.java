@@ -55,11 +55,11 @@ public class RadarModule extends Module {
         Render2D.roundedRect(graphics, x, y, diameter, diameter, diameter / 2, 0xB30C0E14);
         if (grid.get()) {
             Render2D.roundedOutline(graphics, x, y, diameter, diameter, diameter / 2,
-                    ColorUtil.withAlpha(accent.get(), 90), 1.0f);
+                    ColorUtil.withAlpha(HudStyleModule.resolve(accent), 90), 1.0f);
             Render2D.rect(graphics, x + diameter / 2f - 0.5f, y + 6, 1, diameter - 12,
-                    ColorUtil.withAlpha(accent.get(), 45));
+                    ColorUtil.withAlpha(HudStyleModule.resolve(accent), 45));
             Render2D.rect(graphics, x + 6, y + diameter / 2f - 0.5f, diameter - 12, 1,
-                    ColorUtil.withAlpha(accent.get(), 45));
+                    ColorUtil.withAlpha(HudStyleModule.resolve(accent), 45));
         }
 
         float yaw = (float) Math.toRadians(client.player.getYRot());
@@ -105,7 +105,7 @@ public class RadarModule extends Module {
         // метка севера
         int northX = centerX + (int) (Math.sin(yaw) * (diameter / 2.0 - 5));
         int northY = centerY - (int) (Math.cos(yaw) * (diameter / 2.0 - 5));
-        graphics.fill(northX - 1, northY - 1, northX + 2, northY + 2, ColorUtil.withAlpha(accent.get(), 220));
-        Render2D.textCentered(graphics, "N", northX, northY - 8, ColorUtil.withAlpha(accent.get(), 200));
+        graphics.fill(northX - 1, northY - 1, northX + 2, northY + 2, ColorUtil.withAlpha(HudStyleModule.resolve(accent), 220));
+        Render2D.textCentered(graphics, "N", northX, northY - 8, ColorUtil.withAlpha(HudStyleModule.resolve(accent), 200));
     }
 }

@@ -90,8 +90,8 @@ public class StaffListModule extends Module {
             default -> 8;
         };
         Render2D.roundedRect(graphics, x, y, width, height, 6, 0xB30C0E14);
-        Render2D.roundedRect(graphics, x, y, 3, height, 2, accent.get());
-        Render2D.textShadow(graphics, "STAFF " + staff.size(), x + 9, y + 5, accent.get());
+        Render2D.roundedRect(graphics, x, y, 3, height, 2, HudStyleModule.resolve(accent));
+        Render2D.textShadow(graphics, "STAFF " + staff.size(), x + 9, y + 5, HudStyleModule.resolve(accent));
         for (int i = 0; i < staff.size(); i++) {
             Render2D.text(graphics, staff.get(i), x + 9, y + 16 + i * 10,
                     ColorUtil.withAlpha(0xFFFFFFFF, 220));

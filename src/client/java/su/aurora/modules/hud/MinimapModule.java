@@ -137,7 +137,7 @@ public class MinimapModule extends Module {
         graphics.blit(RenderPipelines.GUI_TEXTURED, textureId, x, y, 0f, 0f, px, px, px, px);
         if (frame.get()) {
             Render2D.roundedOutline(graphics, x - 1, y - 1, px + 2, px + 2, 4,
-                    ColorUtil.withAlpha(accent.get(), 160), 1.0f);
+                    ColorUtil.withAlpha(HudStyleModule.resolve(accent), 160), 1.0f);
         }
 
         double half = (px - 1) / 2.0;
@@ -178,7 +178,7 @@ public class MinimapModule extends Module {
                             }
                             int dotX = x + (int) Math.round(px / 2.0 + dx);
                             int dotY = y + (int) Math.round(px / 2.0 + dz);
-                            graphics.fill(dotX - 2, dotY - 2, dotX + 3, dotY + 3, accent.get());
+                            graphics.fill(dotX - 2, dotY - 2, dotX + 3, dotY + 3, HudStyleModule.resolve(accent));
                         } catch (NumberFormatException ignored) {
                         }
                     }
@@ -193,7 +193,7 @@ public class MinimapModule extends Module {
         int arrowX = centerPx + (int) (-Math.sin(yaw) * 5);
         int arrowY = centerPy + (int) (Math.cos(yaw) * 5);
         graphics.fill(centerPx - 1, centerPy - 1, centerPx + 2, centerPy + 2, 0xFFFFFFFF);
-        graphics.fill(arrowX - 1, arrowY - 1, arrowX + 2, arrowY + 2, accent.get());
+        graphics.fill(arrowX - 1, arrowY - 1, arrowX + 2, arrowY + 2, HudStyleModule.resolve(accent));
     }
 
     @Override

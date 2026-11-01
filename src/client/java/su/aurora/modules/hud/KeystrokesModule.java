@@ -67,7 +67,7 @@ public class KeystrokesModule extends Module {
         float gap = 3;
         float x = 8;
         float y = client.getWindow().getGuiScaledHeight() - (box * 3 + gap * 2) - 76;
-        int accentColor = accent.get();
+        int accentColor = HudStyleModule.resolve(accent);
         int bg = 0x8C0C0E14;
         int text = 0xFFFFFFFF;
 

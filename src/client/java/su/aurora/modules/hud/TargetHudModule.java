@@ -58,7 +58,7 @@ public class TargetHudModule extends Module {
         float y = screenHeight - height - 30;
 
         Render2D.roundedRect(graphics, x, y, width, height, 7, 0xB30C0E14);
-        Render2D.roundedRect(graphics, x, y, 3, height, 3, accent.get());
+        Render2D.roundedRect(graphics, x, y, 3, height, 3, HudStyleModule.resolve(accent));
         float textX = x + 10;
         if (avatar) {
             net.minecraft.client.player.AbstractClientPlayer skinPlayer =
