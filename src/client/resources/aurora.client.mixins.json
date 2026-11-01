@@ -13,7 +13,8 @@
 		"ContainerScreenMixin",
 		"EndCrystalRendererMixin",
 		"ItemInHandRendererMixin",
-		"TitleScreenMixin"
+		"TitleScreenMixin",
+		"ChatMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

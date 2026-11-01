@@ -48,6 +48,13 @@ import su.aurora.modules.misc.NoPauseModule;
 import su.aurora.modules.misc.ItemScrollerModule;
 import su.aurora.modules.misc.MainMenuSettingModule;
 import su.aurora.modules.player.ZoomModule;
+import su.aurora.modules.render.StorageEspModule;
+import su.aurora.modules.render.BlockEspModule;
+import su.aurora.modules.hud.RadarModule;
+import su.aurora.modules.hud.ServerInfoModule;
+import su.aurora.modules.hud.StaffListModule;
+import su.aurora.modules.hud.ClockModule;
+import su.aurora.modules.hud.FpsGraphModule;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -85,6 +92,13 @@ public class ModuleManager {
         register(new ItemScrollerModule());
         register(new MainMenuSettingModule());
         register(new ZoomModule());
+        register(new StorageEspModule());
+        register(new BlockEspModule());
+        register(new RadarModule());
+        register(new ServerInfoModule());
+        register(new StaffListModule());
+        register(new ClockModule());
+        register(new FpsGraphModule());
         // Particles
         register(new JumpCirclesModule());
         register(new TotemParticlesModule());
